@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         initViews();
 
 
-        Webi.with(this).from("http://timc.a-gh.org/api/api.php").addPost("username","sdgdgsdgsdgsdg").onResponse(new OnResponse() {
+        Webi.with(this).from("https://github.com/alirezaashrafi/webi").onResponse(new OnResponse() {
             @Override
             public void Response(String res, String where) {
                 Log.i(TAG, "Response: " + where);
