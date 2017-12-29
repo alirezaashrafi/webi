@@ -1,5 +1,5 @@
 # Webi
-##### webi is an HTTP library that makes networking for Android apps
+##### Webi is an HTTP library that makes networking for Android apps
 - easier and, most importantly, faster
 - There are three fast Caching method ram,xml,sql
 - jsonArray and jsonObject request
@@ -25,12 +25,12 @@
 ### Maven
 ###### Add the JitPack repository to your build file
 ```xml
-    <repositories>
-		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
-		</repository>
-	</repositories>
+  <repositories>
+    <repository>
+        <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
 ```
 
 ###### Add the dependency
@@ -135,10 +135,11 @@ When work offline is enabled, content is only read from cache and cache content 
   .connectTimeOut(10000)
   .readTimeOut(10000)
   //The default of both is 5000 ms
-                ```
+```
 
 
 ##### Get Response Time
+
 ```java
     Webi.with(context)
       .from("http://www.example.com")
