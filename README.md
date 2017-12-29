@@ -1,5 +1,9 @@
-<img src="https://github.com/alirezaashrafi/webi/blob/master/webi.jpg?raw=true" width="600px">
-# webi android libray
+<center><img src="https://github.com/alirezaashrafi/webi/blob/master/webi.jpg?raw=true" width="500px">
+
+</center>
+
+# <center>webi android libray</center>
+<br>
 ##### Webi is an HTTP library that makes networking for Android apps
 - easier and, most importantly, faster
 - There are three fast Caching method ram,xml,sql
@@ -10,7 +14,7 @@
 
 
 
-# How to download webi
+## How to download webi
 ### Gradle
 ###### Add it in your root build.gradle at the end of repositories:
 ```java
@@ -47,7 +51,7 @@
   </dependency>
 ```
 
-# How to use webi
+## How to use webi
 ```java
   Webi.with(context)
       .from("http://www.example.com")
