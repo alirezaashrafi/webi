@@ -1,14 +1,17 @@
-<center><img src="https://github.com/alirezaashrafi/webi/blob/master/webi.jpg?raw=true" width="500px">
+<img src="https://github.com/alirezaashrafi/webi/blob/master/webi.jpg?raw=true" width="100%">
 
-</center>
 
-# <center>webi android libray</center>
+
+# Webi Android Http Libray
 <br>
-##### Webi is an HTTP library that makes networking for Android apps
+
+<h4>Webi is an HTTP library that makes networking for Android apps</h4>
+
 - easier and, most importantly, faster
 - There are three fast Caching method ram,xml,sql
 - jsonArray and jsonObject request
 - post to server fast and easier
+
 
 
 
