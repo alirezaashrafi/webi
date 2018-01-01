@@ -1,7 +1,5 @@
 package com.ashrafi.webi.interfaces;
 
-import com.ashrafi.webi.enums.Log;
-
 /**
  * Created by AlirezaAshrafi on 12/27/2017.
  */

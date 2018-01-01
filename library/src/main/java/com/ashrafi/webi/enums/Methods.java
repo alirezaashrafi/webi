@@ -6,6 +6,11 @@ package com.ashrafi.webi.enums;
 
 public enum Method {
     POST("POST"),
+    PUT("PUT"),
+    DELETE("DELETE"),
+    OPTIONS("OPTIONS"),
+    HEAD("HEAD"),
+    TRACE("TRACE"),
     GET("GET");
 
 

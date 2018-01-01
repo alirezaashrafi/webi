@@ -2,22 +2,36 @@ package com.ashrafi.webi.classes;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
 
 import com.ashrafi.webi.DataBuilder.PostDataBuilder;
+import com.ashrafi.webi.PostDataModel.Get;
+import com.ashrafi.webi.PostDataModel.Header;
 import com.ashrafi.webi.PostDataModel.Posts;
+import com.ashrafi.webi.enums.Logs;
+import com.ashrafi.webi.enums.Methods;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
+import java.net.Proxy;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -30,8 +44,11 @@ public class WebService {
     /*--*   log tag  *--*/
     private final String TAG = this.getClass().getName();
 
+    protected int retry = 0;
     /*--*   request body array list  *--*/
-    protected List<Posts> postsList;
+    protected List<Posts> posts;
+    protected List<Header> headers;
+    protected List<Get> gets;
 
     /*--*  webi cache configs  *--*/
     protected boolean ramCache = false;
@@ -42,8 +59,13 @@ public class WebService {
     protected boolean encryptCache = false;
 
 
+    protected String sqlCacheKey = "";
+    protected String xmlCacheKey = "";
+
+
     protected String url = "";
     protected String method = "POST";
+    protected String token = null;
 
     protected Context context;
     protected String postData = "";
@@ -72,42 +94,74 @@ public class WebService {
     /*--*   key  *--*/
     private String key = "";
 
-    //0
+    protected Proxy proxy;
+
+
+    //1
     WebService(Context context, Webi webi, WebiEvents webiEvents) {
-        this.postsList = new ArrayList<>();
+        this.posts = new ArrayList<>();
+        this.headers = new ArrayList<>();
         this.webiEvents = webiEvents;
         this.webi = webi;
         this.context = context;
-
-        Handler handler = new Handler(context.getMainLooper());
     }
 
-    //1
+    //2
     protected void begin() {
-        //build string of post data
-        postData = new PostDataBuilder().buildPostData(postsList);
+        startBackground();
+    }
 
+
+    //3
+    private void startBackground() {
+        @SuppressLint("StaticFieldLeak")
+        AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                configs();
+
+                return null;
+            }
+        };
+        asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    //4
+    private void configs() {
+        //build string of post data
+        postData = new PostDataBuilder().buildPostData(posts);
+
+        //hash key
         key = new HashKey(url + postData).build();//hash
 
 
+        //cache configs
         if (ramCache) {
             cacheRam = new CacheRam(key);
         }
         if (xmlCache) {
-            cacheXml = new CacheXml(context, key);
+            if (xmlCacheKey.equals("")) {
+                cacheXml = new CacheXml(context, key);
+            } else {
+                cacheXml = new CacheXml(context, xmlCacheKey);
+            }
         }
         if (sqlCache) {
-            cacheSql = new CacheSql(context, key);
+            if (sqlCacheKey.equals("")) {
+                cacheSql = new CacheSql(context, key);
+            } else {
+                cacheSql = new CacheSql(context, sqlCacheKey);
+            }
         }
-
 
         onSetup();
     }
 
 
-    //2
+    //5
     private void onSetup() {
-        onStart();//call on start method
+        onStart();//call on start setMethod
 
 
         String where = "";
@@ -136,8 +190,6 @@ public class WebService {
                 public void data(String string) {
                     if (encryptCache) {
                         string = new Encryption().decode(string);
-                    } else {
-                        string = string;
                     }
 
                     onDataReceive(string, Webi.SQL);
@@ -153,55 +205,64 @@ public class WebService {
 
 
         if (!workOffline) {
-            doInBackground();
+            onExecute();
             /*--*   start background thread  *--*/
+        } else {
+            webiEvents.onLog(Logs.WARN, "work offline is on and only read from cache");
         }
 
 
     }
 
 
-    //3
-    private void doInBackground() {
+    //6
+    protected void onExecute() {
+        /*--*   start connection  *--*/
+        openHttpURLConnection();
+        /*--*   start requesting to server  *--*/
 
-        @SuppressLint("StaticFieldLeak")
-        AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-
-                /*--*   start connection  *--*/
-                openHttpURLConnection();
-                /*--*   start requesting to server  *--*/
-
-                return null;
-            }
-        };
-        asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
 
     //4
-    private HttpURLConnection openHttpURLConnection() {
-
+    private void openHttpURLConnection() {
 
         HttpURLConnection httpURLConnection = null;
+
         try {
-            URL urlObject = new URL(url);
+
+            if (gets.size()!=0){
+                this.url = buildURI(this.url,gets);
+            }
+
+            URL url = new URL(this.url);
+
 
             /*--*   http from connection  *--*/
-            httpURLConnection = (HttpURLConnection) urlObject.openConnection();
+
+            if (proxy != null) {
+                httpURLConnection = (HttpURLConnection) url.openConnection(proxy);
+                onInfo("Proxy connected to the HttpURLConnection");
+            } else {
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+            }
+
+
             httpURLConnection.setReadTimeout(readTimeOut);
             httpURLConnection.setConnectTimeout(connectTimeOut);
+
             httpURLConnection.setRequestMethod(method);
+
             httpURLConnection.setDoInput(true);
-            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoOutput(!method.equals(Methods.GET.getValue()));
             httpURLConnection.setUseCaches(httpCache);
 
-            // TODO: 12/27/2017  //attr of http connection
+            httpURLConnection.connect();
 
-            // TODO: 12/27/2017 response code
+            setHeaderData(httpURLConnection);
+
             writeOnHttpConnection(httpURLConnection);
-            /*--*   write postsList  *--*/
+            /*--*   write posts  *--*/
 
             String data = readHttpConnection(httpURLConnection);
             /*--*   read response  *--*/
@@ -210,17 +271,53 @@ public class WebService {
             onDataReceive(data, Webi.ONLINE);
             /*--*   when data receive  *--*/
 
+                /*--*   disconnect http connection  *--*/
+            httpURLConnection.disconnect();
+            onInfo("disconnect httpURLConnection");
 
+        } catch (SocketTimeoutException e) {
 
+            /*--*   when time out connection  *--*/
+            webiEvents.OnTimeOut();
+            onError(e.getMessage());
+            onRetry();
+
+        } catch (ProtocolException e) {
+            onError(e.getMessage());
         } catch (Exception e) {
-            Log.e(TAG, "openHttpURLConnection: " + e);
+            onError(e.getMessage());
         } finally {
             if (httpURLConnection != null) {
-                /*--*   disconnect http connection  *--*/
                 httpURLConnection.disconnect();
             }
         }
-        return httpURLConnection;
+
+    }
+
+    private String buildURI(String url, List<Get> gets) {
+
+        // build url with parameters.
+        Uri.Builder builder = Uri.parse(url).buildUpon();
+        for (int i = 0; i < gets.size(); i++) {
+            builder.appendQueryParameter(gets.get(i).getKey(), gets.get(i).getValue());
+        }
+
+        return builder.toString();
+    }
+
+    private void setHeaderData(HttpURLConnection httpURLConnection) {
+        /*httpURLConnection.setRequestProperty("Content-Type", "application/json");
+        httpURLConnection.setRequestProperty("Accept", "application/json");*/
+
+        if (token != null) {
+            httpURLConnection.setRequestProperty("Authorization", "Bearer " + token);
+        }
+
+        for (int i = 0; i < headers.size(); i++) {
+            httpURLConnection.setRequestProperty(headers.get(i).getKey(), headers.get(i).getValue());
+        }
+
+
     }
 
 
@@ -235,17 +332,41 @@ public class WebService {
         try {
             OutputStream outputStream = httpURLConnection.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-            writer.write(postData);
+
+
+                writer.write(postData);
+
             writer.flush();
             writer.close();
             outputStream.close();
 
+        } catch (IOException e) {
+
+            onError(e.getMessage());
+
         } catch (Exception e) {
-            Log.e(TAG, "writeOnHttpConnection: " + e);
+            onError(e.getMessage());
         }
 
     }
 
+    private void onError(String error) {
+        webiEvents.onLog(Logs.ERROR, error);
+    }
+
+    private void onInfo(String error) {
+        webiEvents.onLog(Logs.INFO, error);
+    }
+
+    //6.5
+    private void onRetry() {
+        if (retry != 0) {
+            retry--;
+            webiEvents.onRetry(retry);
+            onInfo("retry");
+            onExecute();
+        }
+    }
 
     //7
     private String readHttpConnection(HttpURLConnection httpURLConnection) {
@@ -254,6 +375,7 @@ public class WebService {
         int code = 0;
         try {
             code = httpURLConnection.getResponseCode();
+            onInfo("response code = " + code);
             if (code == HttpsURLConnection.HTTP_OK) {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
 
@@ -263,21 +385,15 @@ public class WebService {
                 }
                 bufferedReader.close();
             } else {
-                Log.e(TAG, "readHttpConnection: httpURLConnection is not 200 or OK");
-                webiEvents.onLog(com.ashrafi.webi.enums.Log.ERROR, "httpURLConnection is not 200 or OK it is " + httpURLConnection.getResponseCode());
+                webiEvents.OnFailed(code);
+                onError("httpURLConnection is not 200 or OK");
             }
             return stringBuilder.toString();
         } catch (Exception e) {
-            Log.e(TAG, "readHttpConnection: it is " + code);
+            onError(e.getMessage());
             return "";
         }
     }
-
-    /**
-     * (webi library github - by alireza ashrafi - github : alirezaashrafi)
-     * <p>
-     * when http from connection done
-     */
 
 
     /**
@@ -297,20 +413,23 @@ public class WebService {
 
         if (lastResponse.length() != data.length()) {
 
-
+            onInfo("new response received from " + where);
             lastResponse = data;
-            /*--*   call done method  *--*/
+            /*--*   call done setMethod  *--*/
             onDone();
 
 
-        /*--*   post receive to interface  *--*/
+
+            /*--*   post receive to interface  *--*/
             webiEvents.onResponse(data, where);
 
-        /*--*   json parser  *--*/
+            /*--*   json parser  *--*/
             webiEvents.onJsonArray(data, where);
             webiEvents.onJsonObject(data, where);
 
-            // TODO: 12/27/2017  xml
+            /*--*   xml parse  *--*/
+            webiEvents.OnXmlReceive(data, where);
+
             if ((sqlCache || xmlCache) && (encryptCache)) {
 
                 Encryption encryption = new Encryption();
@@ -323,6 +442,8 @@ public class WebService {
             /*--*   else enctypt is false Unchanged data  *--*/
                 cache(data, where);
             }
+        } else {
+            webiEvents.onLog(Logs.WARN, "response not changed from = " + where);
         }
 
     }

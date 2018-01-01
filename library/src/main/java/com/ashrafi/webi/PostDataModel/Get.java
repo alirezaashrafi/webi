@@ -1,11 +1,10 @@
 package com.ashrafi.webi.PostDataModel;
 
 /**
- * Created by AlirezaAshrafi on 12/26/2017.
+ * Created by AlirezaAshrafi on 1/1/2018.
  */
 
-public class Posts {
-
+public class Get {
     private String key = "";
     private String value = "";
 

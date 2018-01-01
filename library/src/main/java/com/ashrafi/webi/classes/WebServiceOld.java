@@ -45,7 +45,7 @@ public class WebServiceOld {
     private OnResponse onResponse;
     private Handler handler;
     private Context context;
-    private int method = 1;
+    private int setMethod = 1;
     private boolean cache = false;
     private HashMap<String, String> hashMap = new HashMap<String, String>();
     private String link = "";
@@ -57,8 +57,8 @@ public class WebServiceOld {
         handler = new Handler(context.getMainLooper());
     }
 
-    public WebServiceOld method(int method) {
-        this.method = method;
+    public WebServiceOld setMethod(int setMethod) {
+        this.setMethod = setMethod;
 
         return this;
     }
@@ -113,7 +113,7 @@ public class WebServiceOld {
 
                 loadFromSqlite();
 
-                doInBackground();
+                doInBa();
 
             }
         });
@@ -160,17 +160,17 @@ public class WebServiceOld {
             onResponse.onJsonArrayLoaded(new JSONArray(data), where, SUCCESS, false);
 
         } catch (final JSONException e) {
-            Log.e(TAG, "JsonArrayDecoder: " + e);
+            Logs.e(TAG, "JsonArrayDecoder: " + e);
             e.printStackTrace();
         }
     }
 
 
     @SuppressLint("StaticFieldLeak")
-    private void doInBackground() {
+    private void doInBa() {
         new AsyncTask<Void, Void, Void>() {
             @Override
-            protected Void doInBackground(Void... voids) {
+            protected Void doInBa(Void... voids) {
 
                 HttpURLConnection openHttpURLConnection = null;
                 try {
@@ -221,7 +221,7 @@ public class WebServiceOld {
                     assert openHttpURLConnection != null;
                     openHttpURLConnection.disconnect();
                     //loadFromSqlite();
-                    Log.e(TAG, "doInBackground: " + e);
+                    Logs.e(TAG, "doInBa: " + e);
                 }
 
 
@@ -237,7 +237,7 @@ public class WebServiceOld {
 
         new AsyncTask<Void, Void, Void>() {
             @Override
-            protected Void doInBackground(Void... voids) {
+            protected Void doInBa(Void... voids) {
                 if (cache) {
                     noSqlCache.get(hashingLink, new NoSqlCache.DataRecived() {
                         @Override

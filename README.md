@@ -2,9 +2,11 @@
 
 </center>
 
-# <center>webi android libray</center>
+# <center>Webi Android Http Libray</center>
 <br>
-##### Webi is an HTTP library that makes networking for Android apps
+
+<h4>Webi is an HTTP library that makes networking for Android apps</h4>
+
 - easier and, most importantly, faster
 - There are three fast Caching method ram,xml,sql
 - jsonArray and jsonObject request
@@ -181,5 +183,7 @@ limitations under the License.
 
 ## Author
  - [Alireza Ashrafi](https://github.com/alirezaashrafi)
- - [web site](alirezaashrafi.ir)
- - [email - alirezaashrafi.email@gmail.com](alirezaashrafi.email@gmail.com)
+ - [web site : alirezaashrafi.ir](http://alirezaashrafi.ir)
+ - [email : alirezaashrafi.email@gmail.com](alirezaashrafi.email@gmail.com)
+ - phone +98 901 396 2648
+ - [telegram : @dr_khaki](http://t.me/dr_khaki)
