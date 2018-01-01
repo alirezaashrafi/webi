@@ -5,4 +5,5 @@ package com.ashrafi.webi.interfaces;
  */
 
 public interface OnTimeOut {
+    void timeOut();
 }

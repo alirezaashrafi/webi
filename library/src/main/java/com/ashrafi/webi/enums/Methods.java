@@ -4,7 +4,7 @@ package com.ashrafi.webi.enums;
  * Created by AlirezaAshrafi on 12/27/2017.
  */
 
-public enum Method {
+public enum Methods {
     POST("POST"),
     PUT("PUT"),
     DELETE("DELETE"),
@@ -16,7 +16,7 @@ public enum Method {
 
     private String value;
 
-    Method(String value) {
+    Methods(String value) {
         this.value = value;
     }
 

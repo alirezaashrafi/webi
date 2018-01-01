@@ -4,5 +4,6 @@ package com.ashrafi.webi.interfaces;
  * Created by AlirezaAshrafi on 1/1/2018.
  */
 
-public class OnFailed {
+public  interface  OnFailed {
+    void failed(int code);
 }

@@ -4,7 +4,7 @@ package com.ashrafi.webi.enums;
  * Created by AlirezaAshrafi on 12/27/2017.
  */
 
-public enum Log {
+public enum Logs {
 
     ERROR("ERROR"),
     INFO("INFO"),
@@ -13,7 +13,7 @@ public enum Log {
 
     private String log;
 
-    Log(String log) {
+    Logs(String log) {
         this.log = log;
     }
 
