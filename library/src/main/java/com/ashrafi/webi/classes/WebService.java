@@ -381,7 +381,7 @@ public class WebService {
 
                 String line;
                 while ((line = bufferedReader.readLine()) != null) {
-                    stringBuilder.append(line).append("\n");
+                    stringBuilder.append(line);
                 }
                 bufferedReader.close();
             } else {
