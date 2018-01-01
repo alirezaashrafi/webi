@@ -101,6 +101,7 @@ public class WebService {
     WebService(Context context, Webi webi, WebiEvents webiEvents) {
         this.posts = new ArrayList<>();
         this.headers = new ArrayList<>();
+        this.gets = new ArrayList<>();
         this.webiEvents = webiEvents;
         this.webi = webi;
         this.context = context;
