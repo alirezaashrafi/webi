@@ -1,8 +1,11 @@
+
+
 <img src="https://github.com/alirezaashrafi/webi/blob/master/webi.jpg?raw=true" width="100%">
 
 
 
 # Webi Android Http Libray
+##### last version [![](https://jitpack.io/v/alirezaashrafi/webi.svg)](https://jitpack.io/#alirezaashrafi/webi)
 <br>
 
 <h4>Webi is an HTTP library that makes networking for Android apps</h4>
@@ -30,7 +33,7 @@
 ```
 ###### add this line to your module build.gradle dependecies block:
 ```java
-    compile 'com.github.alirezaashrafi:webi:1.3.7'
+    compile 'com.github.alirezaashrafi:webi:2.1.2'
 ```
 
 ### Maven
@@ -50,7 +53,7 @@
   <dependency>
     <groupId>com.github.alirezaashrafi</groupId>
     <artifactId>webi</artifactId>
-    <version>1.3.7</version>
+    <version>2.1.2</version>
   </dependency>
 ```
 
