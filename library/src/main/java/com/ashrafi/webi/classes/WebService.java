@@ -44,7 +44,7 @@ public class WebService {
     /*--*   log tag  *--*/
     private final String TAG = this.getClass().getName();
 
-    protected int retry = 0;
+    protected int retry = 1;
     /*--*   request body array list  *--*/
     protected List<Posts> posts;
     protected List<Header> headers;
@@ -97,6 +97,23 @@ public class WebService {
     protected Proxy proxy;
 
 
+    protected boolean is_retry_seted = false;
+    protected boolean is_url_seted = false;
+    protected boolean is_method_seted = false;
+    protected boolean is_token_seted = false;
+    protected boolean is_connectTimeOut_seted = false;
+    protected boolean is_readTimeOut_seted = false;
+    protected boolean is_proxy_seted = false;
+    protected boolean is_posts_seted = false;
+    protected boolean is_headers_seted = false;
+    protected boolean is_gets_seted = false;
+    protected boolean is_ramCache_seted = false;
+    protected boolean is_xmlCache_seted = false;
+    protected boolean is_sqlCache_seted = false;
+    protected boolean is_workOffline_seted = false;
+    protected boolean is_httpCache_seted = false;
+    protected boolean is_encryptCache_seted = false;
+
     //1
     WebService(Context context, Webi webi, WebiEvents webiEvents) {
         this.posts = new ArrayList<>();
@@ -105,6 +122,59 @@ public class WebService {
         this.webiEvents = webiEvents;
         this.webi = webi;
         this.context = context;
+        loadDefaults();
+    }
+
+    private void loadDefaults() {
+        WebiConfig.init();
+        if (!is_retry_seted) {
+            this.retry = WebiConfig.retry;
+        }
+        if (!is_url_seted) {
+            this.url = WebiConfig.url;
+        }
+        if (!is_method_seted) {
+            this.method = WebiConfig.method;
+        }
+        if (!is_token_seted) {
+            this.token = WebiConfig.token;
+        }
+        if (!is_connectTimeOut_seted) {
+            this.connectTimeOut = WebiConfig.connectTimeOut;
+        }
+        if (!is_readTimeOut_seted) {
+            this.readTimeOut = WebiConfig.readTimeOut;
+        }
+        if (!is_proxy_seted) {
+            this.proxy = WebiConfig.proxy;
+        }
+        if (!is_posts_seted) {
+            this.posts = WebiConfig.posts;
+        }
+        if (!is_headers_seted) {
+            this.headers = WebiConfig.headers;
+        }
+        if (!is_gets_seted) {
+            this.gets = WebiConfig.gets;
+        }
+        if (!is_ramCache_seted) {
+            this.ramCache = WebiConfig.ramCache;
+        }
+        if (!is_xmlCache_seted) {
+            this.xmlCache = WebiConfig.xmlCache;
+        }
+        if (!is_sqlCache_seted) {
+            this.sqlCache = WebiConfig.sqlCache;
+        }
+        if (!is_workOffline_seted) {
+            this.workOffline = WebiConfig.workOffline;
+        }
+        if (!is_httpCache_seted) {
+            this.httpCache = WebiConfig.httpCache;
+        }
+        if (!is_encryptCache_seted) {
+            this.encryptCache = WebiConfig.encryptCache;
+        }
     }
 
     //2
@@ -232,11 +302,12 @@ public class WebService {
 
         try {
 
-            if (gets.size()!=0){
-                this.url = buildURI(this.url,gets);
+            if (gets.size() != 0) {
+                this.url = buildURI(this.url, gets);
             }
 
             URL url = new URL(this.url);
+
 
 
             /*--*   http from connection  *--*/
@@ -335,7 +406,7 @@ public class WebService {
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
 
-                writer.write(postData);
+            writer.write(postData);
 
             writer.flush();
             writer.close();
@@ -369,6 +440,8 @@ public class WebService {
         }
     }
 
+
+
     //7
     private String readHttpConnection(HttpURLConnection httpURLConnection) {
         final StringBuilder stringBuilder = new StringBuilder();
@@ -376,7 +449,7 @@ public class WebService {
         int code = 0;
         try {
             code = httpURLConnection.getResponseCode();
-            onInfo("response code = " + code);
+            onInfo("response code = " + code + " : "  + new HttpCode().httpCode(code));
             if (code == HttpsURLConnection.HTTP_OK) {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
 

@@ -64,6 +64,7 @@ public class Webi {
 
     public Webi from(String url) {
         webService.url = url;
+        webService.is_url_seted = true;
         return this;
     }
 
@@ -73,6 +74,8 @@ public class Webi {
          *  convert all objects to string
          *
          */
+        webService.is_url_seted = true;
+
         webService.url = url.toString();
         return this;
     }
@@ -131,6 +134,7 @@ public class Webi {
         posts.setKey(String.valueOf(key));
         posts.setValue(String.valueOf(value));
         webService.posts.add(posts);
+        webService.is_posts_seted = true;
         return this;
     }
 
@@ -140,6 +144,7 @@ public class Webi {
         posts.setValue(String.valueOf(value));
         posts.setDescription(String.valueOf(description));
         webService.posts.add(posts);
+        webService.is_posts_seted = true;
         return this;
     }
 
@@ -150,11 +155,13 @@ public class Webi {
      */
     public Webi addPostList(List<Posts> bodies) {
         webService.posts.addAll(bodies);
+        webService.is_posts_seted = true;
         return this;
     }
 
     public Webi setPostList(List<Posts> bodies) {
         webService.posts = (bodies);
+        webService.is_posts_seted = true;
         return this;
     }
 
@@ -187,6 +194,7 @@ public class Webi {
      */
     public Webi setAllowHttpCache(boolean httpCache) {
         webService.httpCache = httpCache;
+        webService.is_httpCache_seted = true;
         return this;
     }
 
@@ -198,6 +206,8 @@ public class Webi {
      */
     public Webi setEncryptCache(boolean encryptCache) {
         webService.encryptCache = encryptCache;
+        webService.is_encryptCache_seted = true;
+
         return this;
     }
 
@@ -209,8 +219,10 @@ public class Webi {
      */
     public Webi setWordOffline(boolean offline) {
         webService.workOffline = offline;
+        webService.is_workOffline_seted = true;
         return this;
     }
+
 
 
     /**
@@ -219,6 +231,7 @@ public class Webi {
      * save response in static variable
      */
     public Webi setRamCache(boolean ramCache) {
+        webService.is_ramCache_seted = true;
         webService.ramCache = ramCache;
         return this;
     }
@@ -230,11 +243,13 @@ public class Webi {
      * storage response in share pref
      */
     public Webi setXmlCache(boolean xmlCache) {
+        webService.is_xmlCache_seted = true;
         webService.xmlCache = xmlCache;
         return this;
     }
 
     public Webi setXmlCache(boolean xmlCache, String key) {
+        webService.is_xmlCache_seted = true;
         webService.xmlCache = xmlCache;
         webService.xmlCacheKey = key;
         return this;
@@ -247,11 +262,13 @@ public class Webi {
      * storage response in sqlite database
      */
     public Webi setSqlCache(boolean sqlCache) {
+        webService.is_sqlCache_seted = true;
         webService.sqlCache = sqlCache;
         return this;
     }
 
     public Webi setSqlCache(boolean sqlCache, String key) {
+        webService.is_sqlCache_seted = true;
         webService.sqlCache = sqlCache;
         webService.sqlCacheKey = key;
         return this;
@@ -264,6 +281,7 @@ public class Webi {
      */
     public Webi setReadTimeOut(int readTimeOut) {
         webService.readTimeOut = readTimeOut;
+        webService.is_readTimeOut_seted = true;
         return this;
     }
 
@@ -274,6 +292,7 @@ public class Webi {
      */
     public Webi setConnectTimeOut(int connectimeOut) {
         webService.connectTimeOut = connectimeOut;
+        webService.is_connectTimeOut_seted = true;
         return this;
     }
 
@@ -304,6 +323,7 @@ public class Webi {
      */
     public Webi setMethod(Methods method) {
         webService.method = method.getValue();
+        webService.is_method_seted = true;
         return this;
     }
 
@@ -356,6 +376,7 @@ public class Webi {
 
     public Webi setRetryTimes(int retry) {
         webService.retry = retry;
+        webService.is_retry_seted = true;
         return this;
     }
 
@@ -396,11 +417,13 @@ public class Webi {
     }
 
     public Webi setProxy(String host, int port) {
+        webService.is_proxy_seted = true;
         webService.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
         return this;
     }
 
     public Webi setProxy(String host, int port, final String username, final String password) {
+        webService.is_proxy_seted = true;
         webService.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
         System.setProperty("http.proxyHost", host);
         System.setProperty("http.proxyPort", String.valueOf(port));
@@ -444,6 +467,7 @@ public class Webi {
     public Webi addHeader(Object key, Object value) {
         Header header = new Header();
         header.setKey(String.valueOf(key));
+        webService.is_headers_seted = true;
         header.setValue(String.valueOf(value));
         webService.headers.add(header);
         return this;
@@ -455,16 +479,25 @@ public class Webi {
         header.setValue(String.valueOf(value));
         header.setDescription(String.valueOf(description));
         webService.headers.add(header);
+        webService.is_headers_seted = true;
         return this;
     }
 
     public Webi addHeaderList(List<Header> headers) {
+        webService.headers.addAll(headers);
+        webService.is_headers_seted = true;
+        return this;
+    }
+
+    public Webi setHeaderList(List<Header> headers) {
         webService.headers = headers;
+        webService.is_headers_seted = true;
         return this;
     }
 
     public Webi addGet(Object key, Object value) {
         Get get = new Get();
+        webService.is_gets_seted = true;
         get.setKey(String.valueOf(key));
         get.setValue(String.valueOf(value));
         webService.gets.add(get);
@@ -472,6 +505,7 @@ public class Webi {
     }
 
     public Webi addGet(Object key, Object value, Object description) {
+        webService.is_gets_seted = true;
         Get get = new Get();
         get.setKey(String.valueOf(key));
         get.setValue(String.valueOf(value));
@@ -481,6 +515,13 @@ public class Webi {
     }
 
     public Webi addGetList(List<Get> gets) {
+        webService.is_gets_seted = true;
+        webService.gets.addAll(gets);
+        return this;
+    }
+
+    public Webi setGetList(List<Get> gets) {
+        webService.is_gets_seted = true;
         webService.gets = gets;
         return this;
     }
@@ -489,6 +530,15 @@ public class Webi {
         return webService.headers;
     }
 
+    public Webi setBearerToken(String bearerToken) {
+        webService.token = bearerToken;
+        webService.is_token_seted = true;
+        return this;
+    }
+
+    public String getBearerToken() {
+        return webService.token;
+    }
 
 }
 

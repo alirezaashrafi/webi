@@ -7,6 +7,8 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.ashrafi.webi.classes.Webi;
+import com.ashrafi.webi.classes.WebiConfig;
+import com.ashrafi.webi.enums.Methods;
 import com.ashrafi.webi.interfaces.OnLog;
 import com.ashrafi.webi.interfaces.OnResponse;
 
@@ -21,23 +23,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        initViews();
-
-
         final String link = "http://alirezaashrafi.ir";
 
-        Webi.with(this).from(link).onResponse(new OnResponse() {
+        WebiConfig.init().setDefaultUrl(link).setDefaultSqlCache(true);
+
+
+
+        initViews();
+        Webi.with(this).onResponse(new OnResponse() {
             @Override
             public void Response(String res, String where) {
                 textView.setText(res);
             }
-        }).setOnLogListener(new OnLog() {
+        }).from("https://www.google.com/").setOnLogListener(new OnLog() {
             @Override
             public void onLog(String type, String log) {
                 Log.i(TAG, "setOnLogListener: " + log);
             }
-        }).connect();
-
+        }).setMethod(Methods.GET).connect();
     }
 
 
