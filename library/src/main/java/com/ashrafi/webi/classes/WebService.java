@@ -130,6 +130,7 @@ public class WebService {
         if (!is_retry_seted) {
             this.retry = WebiConfig.retry;
         }
+
         if (!is_url_seted) {
             this.url = WebiConfig.url;
         }
@@ -441,7 +442,6 @@ public class WebService {
     }
 
 
-
     //7
     private String readHttpConnection(HttpURLConnection httpURLConnection) {
         final StringBuilder stringBuilder = new StringBuilder();
@@ -449,7 +449,7 @@ public class WebService {
         int code = 0;
         try {
             code = httpURLConnection.getResponseCode();
-            onInfo("response code = " + code + " : "  + new HttpCode().httpCode(code));
+            onInfo("response code = " + code + " : " + new HttpCode().httpCode(code));
             if (code == HttpsURLConnection.HTTP_OK) {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
 

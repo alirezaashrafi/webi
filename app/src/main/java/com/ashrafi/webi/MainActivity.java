@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
             public void Response(String res, String where) {
                 textView.setText(res);
             }
-        }).from("https://www.google.com/").setOnLogListener(new OnLog() {
+        }).setOnLogListener(new OnLog() {
             @Override
             public void onLog(String type, String log) {
                 Log.i(TAG, "setOnLogListener: " + log);

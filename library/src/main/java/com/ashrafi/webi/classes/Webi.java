@@ -48,7 +48,11 @@ public class Webi {
      * <p>
      * used to instantiate context based objects ApplicationContext will be used
      */
+
+
     public static Webi with(Context context) {
+
+
         Webi webi = new Webi();
         webi.webiEvents = new WebiEvents(context);
         webi.webService = new WebService(context, webi, webi.webiEvents);
@@ -198,6 +202,14 @@ public class Webi {
         return this;
     }
 
+    public String getUrl() {
+        return webService.url;
+    }
+
+    public String getFrom() {
+        return webService.url;
+    }
+
 
     /**
      * (webi library github - by alireza ashrafi - github : alirezaashrafi)
@@ -222,7 +234,6 @@ public class Webi {
         webService.is_workOffline_seted = true;
         return this;
     }
-
 
 
     /**

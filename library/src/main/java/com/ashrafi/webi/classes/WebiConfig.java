@@ -1,6 +1,7 @@
 package com.ashrafi.webi.classes;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import com.ashrafi.webi.PostDataModel.Get;
@@ -21,7 +22,7 @@ public class WebiConfig {
         if (posts == null) {
             posts = new ArrayList<>();
         }
-        if (headers== null) {
+        if (headers == null) {
             headers = new ArrayList<>();
         }
         if (gets == null) {
@@ -118,6 +119,7 @@ public class WebiConfig {
         return this;
     }
 
+
     public WebiConfig setDefaultPosts(List<Posts> posts) {
         WebiConfig.posts = posts;
         return this;
@@ -150,6 +152,9 @@ public class WebiConfig {
     }
 
     public WebiConfig setDefaultUrl(Object url) {
+        WebiConfig.url = url.toString();
+        return this;
+    } public WebiConfig setDefaultFrom(Object url) {
         WebiConfig.url = url.toString();
         return this;
     }
