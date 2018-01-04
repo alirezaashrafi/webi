@@ -11,18 +11,10 @@ import com.ashrafi.webi.classes.WebiConfig;
 public class myApplication extends Application {
     @Override
     public void onCreate() {
-        WebiConfig.init().set
-
-
-
-
-
-
-
-
-
-
-
+        WebiConfig.init()
+                .setDefaultUrl("http://alirezaashrafi.ir")
+                .setDefaultConnectTimeOut(15000)
+                .setDefaultReadTimeOut(15000);
 
 
 
