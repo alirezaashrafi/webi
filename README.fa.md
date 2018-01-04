@@ -45,7 +45,7 @@
 <h6 dir="rtl" id="">این کد را به build.gradle ماژول خود اضافه کنید</h6>
 
 ```java
-    compile 'com.github.alirezaashrafi:webi:4.0.0'
+    compile 'com.github.alirezaashrafi:webi:4.1.0'
 ```
 
 <h3  dir="rtl" id="maven">Maven</h3>
@@ -67,7 +67,7 @@
   <dependency>
     <groupId>com.github.alirezaashrafi</groupId>
     <artifactId>webi</artifactId>
-    <version>4.0.0</version>
+    <version>4.1.0</version>
   </dependency>
 ```
 

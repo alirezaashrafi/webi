@@ -36,7 +36,7 @@
 ```
 ###### add this line to your module build.gradle dependecies block:
 ```java
-    compile 'com.github.alirezaashrafi:webi:4.0.0'
+    compile 'com.github.alirezaashrafi:webi:4.1.0'
 ```
 
 ### Maven
@@ -56,7 +56,7 @@
   <dependency>
     <groupId>com.github.alirezaashrafi</groupId>
     <artifactId>webi</artifactId>
-    <version>4.0.0</version>
+    <version>4.1.0</version>
   </dependency>
 ```
 ---
