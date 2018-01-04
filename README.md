@@ -3,26 +3,28 @@
 <img src="https://github.com/alirezaashrafi/webi/blob/master/webi.jpg?raw=true" width="100%">
 
 
-<h3>last version </h3>
+
+
 [![](https://jitpack.io/v/alirezaashrafi/webi.svg)](https://jitpack.io/#alirezaashrafi/webi)
-# Webi Android Http Libray
 
 
 
-<h4>Webi is an HTTP library that makes networking for Android apps</h4>
+<h4>Webi is a Fast and full of features HTTP library that makes easy networking and caching response for Android apps And comparable to other similar libraries</h4>
 
-- easier and, most importantly, faster
-- There are three fast Caching method ram,xml,sql
-- jsonArray and jsonObject request
-- post to server fast and easier
-
-
-
-
+- Easy to use and set up
+- Less coding
+- Very fast and multi-threaded
+- Includes quick and different ways to cache
+- JsonArray , jsonObject and xml request
+- Easily post values to the server
 
 
+
+
+
+---
 ## How to download webi
-### Gradle
+#### Gradle
 ###### Add it in your root build.gradle at the end of repositories:
 ```java
     allprojects {
@@ -57,7 +59,7 @@
     <version>4.0.0</version>
   </dependency>
 ```
-
+---
 ## How to use webi
 ```java
   Webi.with(context)
@@ -68,18 +70,32 @@
               //response is content of url
               //where is type of load response from e.g. online ram xml or sql
           }
-      }).connect();;
+      }).connect();
+```
+---
+##### Retry on failed
+```java
+  .setRetryTimes(int times) //Default is one time
+
+  .setOnRetry(new OnRetry() {
+      @Override
+      public void retry(int remainingRetrys) {
+          //call back when retry
+      }
+  });
 ```
 
+---
 ##### Post with webi
+`.addPost(key,value,description);` note: description is meta data and these are not sent with your HTTP request
 ```java
   Webi.with(context)
       .from("http://www.example.com")
       .addPost("username","webi")
       .addPost("password","123456")
-      .connect();;
+      .connect();
 ```
-###### and receive this posts in php
+##### and receive this posts in php
 ```php
   <?php
       $username = $_POST['username'];  //value webi
@@ -101,25 +117,70 @@
     .addPostList(postsList)
     .connect();
 ```
-##### JsonArray and JsonObject request with webi
+---
+##### Add GET method params
+
 ```java
   Webi.with(context)
-    .from("http://www.example.com")
-    .jsonArrayRequest(new OnJsonArrayReceive() {
-        @Override
-        public void jsonArray(JSONArray jsonArray, String where) {
-            //return json array if content is a jsonArray
-            //note jsonArray First character is '[' and the last is ']'
-        }
-    })
-    .jsonObjectRequest(new OnJsonObjectReceive() {
-        @Override
-        public void jsonObject(JSONObject jsonObject, String where) {
-            //return json object if content is a json object
-            //note JsonObject First character is '{' and the last is '}'
-        }
-    }).connect();;
+      .from("http://www.example.com")
+      .addGet("username","webi")
+      .addGet("password","123456")
+      .connect();
+
+      //res http://www.example.com?username=webi&password=123456
 ```
+
+###### and get that values in php
+```php
+  <?php
+      $username = $_GET['username'];  //value webi
+      $password = $_GET['password'];  //value 123456
+  ?>
+```
+---
+##### Add Headers
+
+```java
+  Webi.with(context)
+      .from("http://www.example.com")
+      .addHeader("Content-Type","application/json")
+      .addHeader("Authorization","Bearer.....")
+      .connect();
+```
+###### If you want to send bearer token in header use this method
+```java
+  .setBearerToken("e.g. GJKRY78579tFYIlkdhiipEE908y0FD80")
+```
+---
+
+##### JsonArray , JsonObject and XML request with webi
+```java
+  Webi.with(this).from("http://www.example.com")
+      .setOnJsonArrayReceive(new OnJsonArrayReceive() {
+          @Override
+          public void jsonArray(JSONArray jsonArray, String where) {
+              //return json array if content is a jsonArray
+              //note jsonArray First character is '[' and the last is ']'
+
+          }
+      })
+      .setOnJsonObjectReceive(new OnJsonObjectReceive() {
+          @Override
+          public void jsonObject(JSONObject jsonObject, String where) {
+              //return json object if content is a json object
+              //note JsonObject First character is '{' and the last is '}'
+
+          }
+      })
+      .setOnXmlRecevie(new OnXmlReceive() {
+          @Override
+          public void xml(Document xml, String where) {
+              //return xml if content is xml
+
+          }
+      }).connect();
+```
+---
 ##### Caching in webi
 ###### There are three ways to cache
 - ram cache - fastest but temporary
@@ -129,48 +190,111 @@
 ```java
   Webi.with(context)
       .from("http://www.example.com")
-      .ramCache(true) //It is better to have only one active Caching method
-      .xmlCache(true)
-      .sqlCache(true)
+      .setSqlCache(true) //It is better to have only one active Caching method
+      .setXmlCache(true)
+      .setRamCache(true)
       .connect();
 ```
+###### `.setSqlCache(true,key)`
+ `.setXmlCache(true,key)`
+###### Your custom key for storage If you do not set, an automatic hash (MD5) key will be generated
+---
 ##### Work offline
-When work offline is enabled, content is only read from cache and cache content is not update
+When work offline is enable, content is only read from cache and cache content is not update
 ```java
-  .wordOffline(true)
+  .setWordOffline(true)
 ```
+---
 ##### Encrypt cache content
 ###### When encryptCache is enabled, the data is encrypt before insertion
 ```java
-  .encryptCache(true)
+  .setEncryptCache(true)
 ```
-
+---
 ##### Set custom connectTimeOut & readTimeOut
 ```java
-  .connectTimeOut(10000)
-  .readTimeOut(10000)
+  .setConnectTimeOut(10000)
+  .setReadTimeOut(10000)
   //The default of both is 5000 ms
 ```
-
+---
 
 ##### Get Response Time
 
 ```java
-    Webi.with(context)
-      .from("http://www.example.com")
-      .getResponseTime(new GetResponseTime() {
-          @Override
-          public void time(long time) {
-
-          }
-      }).
+  Webi.with(context)
+    .from("http://www.example.com")
+    .getResponseTime(new GetResponseTime() {
+        @Override
+        public void time(long time) {
+            //e.g. 430 ms
+        }
+    }).
 ```
+---
+##### call back when request failed
+```java
+  .setOnFailed(new OnFailed() {
+      @Override
+      public void failed(int code) {
+          //code is http response code e.g. 404
+      }
+  }).
+```
+---
+##### use proxy in Webi
+```java
+.setProxy(host,port).
+   or
+.setProxy(host,port,username,password).
+
+```
+---
+
+### WebiConfig.init()
+#### Use this class to change web defaults
+
+```java
+    WebiConfig.init()
+        .setDefaultUrl("http://alirezaashrafi.ir")
+        .setDefaultConnectTimeOut(15000)
+        .setDefaultReadTimeOut(15000);
+
+    Webi.with(this).onResponse(new OnResponse() {
+        @Override
+        public void Response(String res, String where) {
+
+        }
+    });
+
+```
+##### It will better performance if call and set first of all in application class
+```java
+  public class myApplication extends Application {
+      @Override
+      public void onCreate() {
+          WebiConfig.init()
+                  .setDefaultUrl("http://alirezaashrafi.ir")
+                  .setDefaultConnectTimeOut(15000)
+                  .setDefaultReadTimeOut(15000);
 
 
+          super.onCreate();
+      }
+  }
+```
+##### manifest
+```XML
+<manifest>
+    <application
+        android:name=".myApplication"
+        ...
+        >
 
-
-
-
+    </application>
+</manifest>
+```
+---
 ## Licence
 Copyright 2017 Alireza Ashrafi
 
@@ -186,6 +310,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+---
 ## Author
  - [Alireza Ashrafi](https://github.com/alirezaashrafi)
  - [web site : alirezaashrafi.ir](http://alirezaashrafi.ir)

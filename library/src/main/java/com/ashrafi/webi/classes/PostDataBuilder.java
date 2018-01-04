@@ -1,4 +1,4 @@
-package com.ashrafi.webi.DataBuilder;
+package com.ashrafi.webi.classes;
 
 import android.util.Log;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * Created by AlirezaAshrafi on 12/27/2017.
  */
 
-public class PostDataBuilder {
+final class PostDataBuilder {
     private final String TAG = this.getClass().getName();
 
     public String buildPostData(List<Posts>bodies) {

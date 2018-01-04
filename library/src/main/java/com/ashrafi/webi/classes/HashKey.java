@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 
-public class HashKey {
+final class HashKey {
     private static final String TAG = "HashKey";
     private final String MD5 = "MD5";
     private final String SHA1 = "SHA-1";

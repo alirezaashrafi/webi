@@ -9,8 +9,17 @@ import android.widget.TextView;
 import com.ashrafi.webi.classes.Webi;
 import com.ashrafi.webi.classes.WebiConfig;
 import com.ashrafi.webi.enums.Methods;
+import com.ashrafi.webi.interfaces.OnFailed;
+import com.ashrafi.webi.interfaces.OnJsonArrayReceive;
+import com.ashrafi.webi.interfaces.OnJsonObjectReceive;
 import com.ashrafi.webi.interfaces.OnLog;
 import com.ashrafi.webi.interfaces.OnResponse;
+import com.ashrafi.webi.interfaces.OnRetry;
+import com.ashrafi.webi.interfaces.OnXmlReceive;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.w3c.dom.Document;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -25,24 +34,43 @@ public class MainActivity extends AppCompatActivity {
 
         final String link = "http://alirezaashrafi.ir";
 
-        WebiConfig.init().setDefaultUrl(link).setDefaultSqlCache(true);
+        WebiConfig.init()
+                .setDefaultUrl("http://alirezaashrafi.ir")
+                .setDefaultConnectTimeOut(15000)
+                .setDefaultReadTimeOut(15000);
 
 
-
-        initViews();
         Webi.with(this).onResponse(new OnResponse() {
             @Override
             public void Response(String res, String where) {
-                textView.setText(res);
-            }
-        }).setOnLogListener(new OnLog() {
-            @Override
-            public void onLog(String type, String log) {
-                Log.i(TAG, "setOnLogListener: " + log);
-            }
-        }).setMethod(Methods.GET).connect();
-    }
 
+            }
+        });
+        initViews();
+        Webi.with(this)
+                .onResponse(new OnResponse() {
+                    @Override
+                    public void Response(String res, String where) {
+                        textView.setText(res);
+                    }
+                })
+                .setOnLogListener(new OnLog() {
+                    @Override
+                    public void onLog(String type, String log) {
+                        Log.i(TAG, "setOnLogListener: " + log);
+                    }
+                })
+                .setMethod(Methods.GET)
+                .addPost("", "")
+
+                .setOnXmlRecevie(new OnXmlReceive() {
+                    @Override
+                    public void xml(Document xml, String where) {
+
+                    }
+                })
+                .connect();
+    }
 
 
     private TextView textView;

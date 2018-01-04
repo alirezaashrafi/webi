@@ -4,17 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.ashrafi.webi.DataBuilder.PostDataBuilder;
 import com.ashrafi.webi.PostDataModel.Get;
 import com.ashrafi.webi.PostDataModel.Header;
 import com.ashrafi.webi.PostDataModel.Posts;
 import com.ashrafi.webi.enums.Logs;
 import com.ashrafi.webi.enums.Methods;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -28,10 +23,7 @@ import java.net.Proxy;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -39,7 +31,7 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by AlirezaAshrafi on 12/27/2017.
  */
 
-public class WebService {
+final class WebService {
 
     /*--*   log tag  *--*/
     private final String TAG = this.getClass().getName();
