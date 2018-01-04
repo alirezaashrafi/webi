@@ -8,24 +8,30 @@
 [![](https://jitpack.io/v/alirezaashrafi/webi.svg)](https://jitpack.io/#alirezaashrafi/webi)
 
 
+<h4 dir="rtl">وبی کتابخانه سریع و پر از ویژگی ها برای اتصال به سرور است و از ویژگی های آن میتوان به راحتی و کش کردن پاسخ ها برای نرم افزار های اندرویدی اشاره کرد که میتوان گفت قابل مقایسه و حتی بهتر از کتابخانه های مشابه است</h4>
 
-<h4>Webi is a Fast and full of features HTTP library that makes easy networking and caching response for Android apps And comparable to other similar libraries</h4>
 
-- Easy to use and set up
-- Less coding
-- Very fast and multi-threaded
-- Includes quick and different ways to cache
-- JsonArray , jsonObject and xml request
-- Easily post values to the server
+<ul dir="rtl">
+<li>راحتی در استفاده</li>
 
+<li>برنامه نویسی کمتر</li>
+
+<li>چند نخی و پر سرعت</li>
+
+<li>دربرداشتن روش های مختلف برای کش</li>
+
+<li>قابلیت دریافت jsonArray,jsonObject,xml</li>
+
+<li>راحتی در ارسال و پست مقادیر به سرور</li>
+
+</ul>
+---
+## [readme.md english readme ](https://github.com/alirezaashrafi/webi/blob/master/README.fa.md)
 
 ---
-## [readme.fa.md راهنما فارسی اسفاده از کتابخانه ](https://github.com/alirezaashrafi/webi/blob/master/README.fa.md)
-
----
-## How to download webi
+## چگونه وبی را دانلود کنیم
 #### Gradle
-###### Add it in your root build.gradle at the end of repositories:
+<h6 dir="rtl">این کد را به build.gradle پروژه خود اضافه کنید</h6>
 ```java
     allprojects {
          repositories {
