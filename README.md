@@ -1,4 +1,4 @@
-
+﻿
 
 <img src="https://raw.githubusercontent.com/alirezaashrafi/webi/master/pics/webi.jpg" width="100%">
 
@@ -20,7 +20,7 @@
 
 
 ---
-## [readme.fa.md راهنما فارسی اسفاده از کتابخانه ](https://github.com/alirezaashrafi/webi/blob/master/README.fa.md)
+## [راهنما فارسی اسفاده از کتابخانه](https://github.com/alirezaashrafi/webi/blob/master/README.fa.md)
 
 ---
 ## How to download webi
