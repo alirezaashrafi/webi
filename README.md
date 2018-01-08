@@ -314,6 +314,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+
 ---
 ## Author
  - [Alireza Ashrafi](https://github.com/alirezaashrafi)
@@ -323,4 +324,5 @@ limitations under the License.
  - [telegram : @dr_khaki](http://t.me/dr_khaki)
 
  ---
-## [Eventually see our other libraries and projects](https://github.com/alirezaashrafi/)
+#### If you liked this library, do not forget to star and follow me ⭐️❤️️💙
+#### [Eventually see my other libraries and projects](https://github.com/alirezaashrafi/)
