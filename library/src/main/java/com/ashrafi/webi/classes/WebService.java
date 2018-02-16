@@ -11,6 +11,8 @@ import com.ashrafi.webi.PostDataModel.Posts;
 import com.ashrafi.webi.enums.Logs;
 import com.ashrafi.webi.enums.Methods;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -33,6 +35,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 final class WebService {
 
+    protected JSONObject jsonObject;
     /*--*   log tag  *--*/
     private final String TAG = this.getClass().getName();
 
@@ -100,6 +103,7 @@ final class WebService {
     protected boolean is_headers_seted = false;
     protected boolean is_gets_seted = false;
     protected boolean is_ramCache_seted = false;
+    protected boolean is_jsonObject = false;
     protected boolean is_xmlCache_seted = false;
     protected boolean is_sqlCache_seted = false;
     protected boolean is_workOffline_seted = false;
@@ -108,6 +112,7 @@ final class WebService {
 
     //1
     WebService(Context context, Webi webi, WebiEvents webiEvents) {
+        this.jsonObject = new JSONObject();
         this.posts = new ArrayList<>();
         this.headers = new ArrayList<>();
         this.gets = new ArrayList<>();
@@ -282,6 +287,15 @@ final class WebService {
     //6
     protected void onExecute() {
         /*--*   start connection  *--*/
+
+        if (is_jsonObject){
+            Posts posts = new Posts();
+            posts.setKey("api");
+            posts.setValue(jsonObject.toString());
+            this.posts.add(posts);
+        }
+
+
         openHttpURLConnection();
         /*--*   start requesting to server  *--*/
 

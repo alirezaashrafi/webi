@@ -17,6 +17,7 @@ import com.ashrafi.webi.interfaces.OnTimeOut;
 import com.ashrafi.webi.interfaces.OnXmlReceive;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.Authenticator;
@@ -72,6 +73,16 @@ public class Webi {
         return this;
     }
 
+
+    public Webi addJsonPost(Object key,Object value){
+        try {
+            webService.is_jsonObject = true;
+            webService.jsonObject.put(key.toString(),value.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
     public Webi from(Object url) {
         /** (webi library)
          *
