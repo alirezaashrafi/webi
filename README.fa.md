@@ -1,6 +1,8 @@
 ﻿
 <div  dir="rtl">
 <p><img src="https://raw.githubusercontent.com/alirezaashrafi/webi/master/pics/webi.jpg" width="100%"></p>
+    
+#### ستاره دادن فراموش نشود:)⭐️
 
 <p><a href="https://jitpack.io/#alirezaashrafi/webi"><img src="https://jitpack.io/v/alirezaashrafi/webi.svg" alt="" /></a></p>
 
